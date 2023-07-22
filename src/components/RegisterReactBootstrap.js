@@ -1,4 +1,4 @@
-import { createUserWithEmailAndPassword, getAuth, sendEmailVerification} from 'firebase/auth';
+import { createUserWithEmailAndPassword, getAuth, sendEmailVerification, updateProfile} from 'firebase/auth';
 import React, { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
@@ -16,6 +16,7 @@ const RegisterReactBootstrap = () => {
         const email = form.email.value;
         const name = form.name.value;
         const password = form.password.value;
+        console.log(name);
         
         console.log(name);
         if(!/(?=.*[A-Z].*[A-Z])/.test(password)){
@@ -39,6 +40,7 @@ const RegisterReactBootstrap = () => {
             setSuccess(true);   
             form.reset();
             verifyEmail();
+            updateUserName(name)
         })
         .catch(error => {
             console.error('error:', error);
@@ -51,6 +53,17 @@ const RegisterReactBootstrap = () => {
             alert('Please check your email and verify your email address.')
         })
     };
+
+    const updateUserName = (name) => {
+        updateProfile(auth.currentUser, {
+            displayName: name
+        })
+        .then(() => {
+            console.log('display name updated');
+        })
+        .catch((error) => console.error(error))
+    }
+
     return (
         <div className='w-50 mx-auto'>
             <h3 className="text-primary">Please Register !!!</h3>
